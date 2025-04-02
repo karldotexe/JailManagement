@@ -1,0 +1,10 @@
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Release\Prison.exe.config
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Release\Prison.exe
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Release\Prison.pdb
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.csproj.AssemblyReference.cache
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.LogIn.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.Properties.Resources.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.csproj.GenerateResource.cache
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.exe
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Release\Prison.pdb
