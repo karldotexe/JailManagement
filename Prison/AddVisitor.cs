@@ -1,7 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using AForge.Video;
+using AForge.Video.DirectShow;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -9,7 +12,7 @@ namespace Prison
 {
     public partial class AddVisitor : Form
     {
-        private string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";  // Update with your connection string
+        private string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";
 
         public AddVisitor()
         {
@@ -18,15 +21,49 @@ namespace Prison
             SetupValidations();
         }
 
+        public void SetCapturedImage(Bitmap image)
+        {
+            if (image != null)
+            {
+                SelectedPictureBox.Image = image;
+                SelectedPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Ensure proper display
+            }
+        }
+
+        private VisitorID VisitorID; // Declare parent form reference
+
+        public AddVisitor(VisitorID parent)
+        {
+            InitializeComponent();
+            this.VisitorID = parent; // Assign parent form reference
+            SetupValidations();
+        }
+     
+
+        private void ValidID_Click(object sender, EventArgs e)
+        {
+            // ✅ Pass reference of AddVisitor to VisitorID
+            VisitorID visitorForm = new VisitorID(this);
+            visitorForm.Show();
+        }
+
+
+
+
         // When the form loads, populate the ComboBox with prisoner names.
         private void AddVisitor_Load(object sender, EventArgs e)
         {
             LoadPrisonerNames();  // Populate the ComboBox when the form loads.
 
-            // Ensure VisitTime DateTimePicker shows only the time
+            // ✅ Set VisitTimeIn to Time Only
             VisitTimeIn.Format = DateTimePickerFormat.Custom;
             VisitTimeIn.CustomFormat = "HH:mm";  // Only show time (24-hour format)
             VisitTimeIn.ShowUpDown = true;  // No calendar view, only up-down time picker
+
+            // ✅ Set VisitTimeOut to Time Only
+            VisitTimeOut.Format = DateTimePickerFormat.Custom;
+            VisitTimeOut.CustomFormat = "HH:mm";  // Only show time (24-hour format)
+            VisitTimeOut.ShowUpDown = true;  // No calendar view, only up-down time picker
         }
 
         // Populate the ComboBox with prisoner names from the database, sorted alphabetically
@@ -160,6 +197,47 @@ namespace Prison
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to save visitor information: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string selectedFilePath = ""; // Store the selected file path
+
+    
+
+
+        private void VisitTimeIn_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void File_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedFilePath)) // If no file is selected, open file dialog
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Title = "Select an Image";
+                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif"; // Allow only images
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        selectedFilePath = openFileDialog.FileName;
+                        SelectedPictureBox.Image = new Bitmap(selectedFilePath);
+                        SelectedPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // ✅ Fix zoom issue
+                        File.Text = "Preview Image"; // Change button text after selection
+                    }
+                }
+            }
+            else // If file is already selected, preview it
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(selectedFilePath); // Open the image with default viewer
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to open image: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

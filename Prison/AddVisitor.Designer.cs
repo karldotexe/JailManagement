@@ -52,6 +52,14 @@
             this.ValidationError = new System.Windows.Forms.Label();
             this.ValidationErrorTimer = new System.Windows.Forms.Timer(this.components);
             this.VisitTimeOut = new System.Windows.Forms.DateTimePicker();
+            this.ValidID = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.File = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.SelectedPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -116,6 +124,7 @@
             this.VisitTimeIn.Name = "VisitTimeIn";
             this.VisitTimeIn.Size = new System.Drawing.Size(191, 22);
             this.VisitTimeIn.TabIndex = 8;
+            this.VisitTimeIn.ValueChanged += new System.EventHandler(this.VisitTimeIn_ValueChanged);
             // 
             // VisitPurpose
             // 
@@ -206,7 +215,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Franklin Gothic Book", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(519, 285);
+            this.label9.Location = new System.Drawing.Point(489, 289);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 29);
             this.label9.TabIndex = 17;
@@ -214,7 +223,7 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(507, 460);
+            this.AddButton.Location = new System.Drawing.Point(507, 468);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(284, 41);
             this.AddButton.TabIndex = 18;
@@ -235,7 +244,7 @@
             // 
             this.ValidationError.AutoSize = true;
             this.ValidationError.ForeColor = System.Drawing.Color.IndianRed;
-            this.ValidationError.Location = new System.Drawing.Point(473, 55);
+            this.ValidationError.Location = new System.Drawing.Point(440, 40);
             this.ValidationError.Name = "ValidationError";
             this.ValidationError.Size = new System.Drawing.Size(67, 16);
             this.ValidationError.TabIndex = 21;
@@ -243,16 +252,91 @@
             // 
             // VisitTimeOut
             // 
-            this.VisitTimeOut.Location = new System.Drawing.Point(600, 326);
+            this.VisitTimeOut.Location = new System.Drawing.Point(600, 339);
             this.VisitTimeOut.Name = "VisitTimeOut";
             this.VisitTimeOut.Size = new System.Drawing.Size(191, 22);
             this.VisitTimeOut.TabIndex = 22;
+            // 
+            // ValidID
+            // 
+            this.ValidID.Location = new System.Drawing.Point(966, 468);
+            this.ValidID.Name = "ValidID";
+            this.ValidID.Size = new System.Drawing.Size(139, 38);
+            this.ValidID.TabIndex = 23;
+            this.ValidID.Text = "Open Camera";
+            this.ValidID.UseVisualStyleBackColor = true;
+            this.ValidID.Click += new System.EventHandler(this.ValidID_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Franklin Gothic Book", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(839, 477);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(94, 29);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "Valid ID";
+            // 
+            // File
+            // 
+            this.File.Location = new System.Drawing.Point(1111, 468);
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(77, 38);
+            this.File.TabIndex = 25;
+            this.File.Text = "File";
+            this.File.UseVisualStyleBackColor = true;
+            this.File.Click += new System.EventHandler(this.File_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Franklin Gothic Book", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(549, 289);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(33, 29);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "In";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Franklin Gothic Book", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(532, 332);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(50, 29);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "Out";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Franklin Gothic Book", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(837, 40);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(94, 29);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Valid ID";
+            // 
+            // SelectedPictureBox
+            // 
+            this.SelectedPictureBox.Location = new System.Drawing.Point(842, 86);
+            this.SelectedPictureBox.Name = "SelectedPictureBox";
+            this.SelectedPictureBox.Size = new System.Drawing.Size(514, 357);
+            this.SelectedPictureBox.TabIndex = 29;
+            this.SelectedPictureBox.TabStop = false;
             // 
             // AddVisitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(888, 536);
+            this.ClientSize = new System.Drawing.Size(1396, 536);
+            this.Controls.Add(this.SelectedPictureBox);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.File);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.ValidID);
             this.Controls.Add(this.VisitTimeOut);
             this.Controls.Add(this.ValidationError);
             this.Controls.Add(this.cmbPrisoner);
@@ -277,6 +361,7 @@
             this.Name = "AddVisitor";
             this.Text = "Add Visitor";
             this.Load += new System.EventHandler(this.AddVisitor_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,5 +390,12 @@
         private System.Windows.Forms.Label ValidationError;
         private System.Windows.Forms.Timer ValidationErrorTimer;
         private System.Windows.Forms.DateTimePicker VisitTimeOut;
+        private System.Windows.Forms.Button ValidID;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button File;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.PictureBox SelectedPictureBox;
     }
 }

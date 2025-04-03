@@ -44,3 +44,10 @@ C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.csproj.CopyComplete
 C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.AddPrisonerForm.resources
 C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.LogInForm.resources
 C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.AddVisitor.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.VisitorID.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.dll
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.dll
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.xml
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.xml
+C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.DirectShow.xml
