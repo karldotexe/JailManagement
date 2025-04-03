@@ -16,10 +16,13 @@ namespace Prison
         private Bitmap capturedImage;
         private AddVisitor parentForm;  // Reference to AddVisitor
 
-        public VisitorID(AddVisitor parent)
+        private int visitorId; // Store the correct visitor ID
+
+        public VisitorID(AddVisitor parent, int visitorId)
         {
             InitializeComponent();
-            this.parentForm = parent; // Store reference
+            this.parentForm = parent;
+            this.visitorId = visitorId; // Assign the correct visitor ID
         }
 
         private void VisitorID_Load(object sender, EventArgs e)
@@ -45,7 +48,6 @@ namespace Prison
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             Bitmap frame = (Bitmap)eventArgs.Frame.Clone();
-            frame.RotateFlip(RotateFlipType.RotateNoneFlipX); // Mirror effect
 
             if (pictureBox1.InvokeRequired)
             {
@@ -54,6 +56,7 @@ namespace Prison
             else
             {
                 pictureBox1.Image = frame;
+
             }
         }
 
@@ -68,6 +71,8 @@ namespace Prison
 
         private void button2_Click(object sender, EventArgs e) // Save & Send Button
         {
+
+
             if (capturedImage == null)
             {
                 MessageBox.Show("No image to save!");
@@ -93,10 +98,13 @@ namespace Prison
                 using (MySqlConnection conn = new MySqlConnection(connString))
                 {
                     conn.Open();
-                    string query = "INSERT INTO Images (ImageData) VALUES (@Image)";
+                    string query = "UPDATE visitors SET visitor_id_image = @Image WHERE id = @VisitorId";
+
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Image", imageBytes);
+                      
+                        cmd.Parameters.AddWithValue("@VisitorId", this.visitorId); // Use the stored visitor ID
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -108,9 +116,12 @@ namespace Prison
                 parentForm.SetCapturedImage(capturedImage);
             }
 
-            MessageBox.Show("Image saved and sent successfully!");
+            MessageBox.Show("Image saved");
             this.Close();
         }
+
+      
+
 
         private void VisitorID_FormClosing(object sender, FormClosingEventArgs e)
         {

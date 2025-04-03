@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,16 +18,30 @@ namespace Prison
     {
         // Database connection string (Change prison_management to your actual database name)
         private string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";
-
+        private PictureBox previewPictureBox = new PictureBox();
         public AdminDash()
         {
             InitializeComponent();
+
+            // Set up the preview PictureBox
+            previewPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Ensure proper image zooming
+            previewPictureBox.Visible = false;  // Initially hidden
+            previewPictureBox.BackColor = Color.Black;  // Black background for immersive preview
+            previewPictureBox.Width = Screen.PrimaryScreen.Bounds.Width / 2;  // Set width to half the screen width
+            previewPictureBox.Height = Screen.PrimaryScreen.Bounds.Height / 2;  // Set height to half the screen height
+            previewPictureBox.Left = (Screen.PrimaryScreen.Bounds.Width - previewPictureBox.Width) / 2; // Center horizontally
+            previewPictureBox.Top = (Screen.PrimaryScreen.Bounds.Height - previewPictureBox.Height) / 2; // Center vertically
+
+            previewPictureBox.Click += previewPictureBox_Click;  // Close the preview when clicked
+            this.Controls.Add(previewPictureBox);  // Add it to the form
+
+
             dataGridViewRecords.CellEndEdit += DataGridViewRecords_CellEndEdit;
+            VisitorData.CellContentClick += VisitorData_CellContentClick;
             LoadVisitorData();
 
             // Make DataGridView read-only when the form starts
             dataGridViewRecords.ReadOnly = true;
-
             dataGridViewRecords.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Prevent individual cell selection
             dataGridViewRecords.AllowUserToAddRows = false; // Disable the extra row
 
@@ -38,7 +54,6 @@ namespace Prison
 
             dataGridViewRecords.CellEndEdit += DataGridViewRecords_CellEndEdit;
             dataGridViewRecords.ReadOnly = true;
-
             dataGridViewRecords.EditingControlShowing += dataGridViewRecords_EditingControlShowing;
             dataGridViewRecords.CellClick += dataGridViewRecords_CellClick;
             dataGridViewRecords.CellEnter += dataGridViewRecords_CellEnter;
@@ -46,32 +61,184 @@ namespace Prison
 
         }
 
-        private void LoadVisitorData()
+        public void LoadVisitorData()
         {
+            using (MySqlConnection conn = new MySqlConnection(connString))
+            {
+                conn.Open();
+
+                // ✅ Fetch prisoner full_name instead of prisoner_id
+                string query = @"
+            SELECT v.id, v.full_name, v.contact_number, v.visit_purpose, 
+                   p.full_name AS prisoner_name, v.visit_date, 
+                   v.visit_time_in, v.visit_time_out, v.visitor_id_image 
+            FROM visitors v
+            JOIN prisoners p ON v.prisoner_id = p.id";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Remove the 'visitor_id_image' column if it exists before setting the DataSource
+                    if (dt.Columns.Contains("visitor_id_image"))
+                    {
+                        dt.Columns.Remove("visitor_id_image");
+                    }
+
+                    // Clear previous columns to avoid duplication
+                    VisitorData.Columns.Clear();
+
+                    // Set the DataSource for the DataGridView
+                    VisitorData.DataSource = dt;
+
+                    // Hide the 'id' column
+                    if (VisitorData.Columns.Contains("id"))
+                    {
+                        VisitorData.Columns["id"].Visible = false;
+                    }
+
+                    // Rename prisoner_name column header
+                    if (VisitorData.Columns.Contains("prisoner_name"))
+                    {
+                        VisitorData.Columns["prisoner_name"].HeaderText = "Prisoner Name";
+                    }
+
+                    // Remove row headers (extra first column)
+                    VisitorData.RowHeadersVisible = false;
+
+                    // Add a button column for image preview
+                    DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn
+                    {
+                        Name = "PreviewImageButton",
+                        HeaderText = "Valid ID",
+                        Text = "View", // Button text
+                        UseColumnTextForButtonValue = true, // Use the button text
+                        Width = 100
+                    };
+
+                    VisitorData.Columns.Add(buttonColumn);
+                    VisitorData.Refresh();
+                }
+            }
+        }
+
+
+
+        // Handle the button click event for the "Preview" button
+        private void VisitorData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the clicked cell is in the PreviewImageButton column
+            if (e.ColumnIndex == VisitorData.Columns["PreviewImageButton"].Index && e.RowIndex >= 0)
+            {
+                // Fetch visitor_id_image for the selected visitor (e.g., from the database)
+                int visitorId = (int)VisitorData.Rows[e.RowIndex].Cells["id"].Value;
+
+                byte[] imageData = GetImageDataByVisitorId(visitorId);
+
+                if (imageData != null)
+                {
+                    ShowImagePreview(imageData);  // Implement ShowImage to display the image in a new form or picture box
+                }
+                else
+                {
+                    MessageBox.Show("No image available for this visitor.");
+                }
+            }
+        }
+
+        private byte[] GetImageDataByVisitorId(int visitorId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connString))
+            {
+                conn.Open();
+                string query = "SELECT visitor_id_image FROM visitors WHERE id = @id";
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", visitorId);
+                    object result = cmd.ExecuteScalar();
+                    return result as byte[];
+                }
+            }
+        }
+
+
+        // Method to display the image preview in a custom PictureBox (half screen size)
+        // Method to display the image preview in a custom PictureBox
+        private void ShowImagePreview(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0)
+            {
+                MessageBox.Show("No valid image available.");
+                return;
+            }
+
             try
             {
-                // SQL query to fetch all visitor records
-                string query = "SELECT v.full_name AS 'Visitor Name', v.contact_number AS 'Contact Number', v.visit_purpose AS 'Visit Purpose', " +
-                               "v.address AS 'Address', p.full_name AS 'Prisoner Name', v.relationship_to_prisoner AS 'Relationship', v.visit_date AS 'Visit Date', " +
-                               "v.visit_time_in AS 'Time In', v.visit_time_out AS 'Time Out' FROM visitors v " +
-                               "JOIN prisoners p ON v.prisoner_id = p.id";  // Join with prisoners table to get prisoner names
-
-                using (MySqlConnection conn = new MySqlConnection(connString))
+                using (MemoryStream ms = new MemoryStream(imageData))
                 {
-                    conn.Open();
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);  // Fill the DataTable with the data from the query
+                    Image img = Image.FromStream(ms);
 
-                    // Bind the DataTable to the DataGridView
-                    VisitorData.DataSource = dt;
+                    // Use the existing previewPictureBox instead of creating a new one
+                    previewPictureBox.Image = img;
+                    previewPictureBox.Visible = true;
+                    previewPictureBox.BringToFront();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to load visitor records: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error displaying image: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
+        private void previewPictureBox_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+
+
+
+        private void VisitorManagement_Load(object sender, EventArgs e)
+        {
+            Timer refreshTimer = new Timer();
+            refreshTimer.Interval = 5000; // Refresh every 5 seconds
+            refreshTimer.Tick += (s, args) => LoadVisitorData();
+            refreshTimer.Start();
+        }
+
+
+
+        // When displaying images in a DataGridView, handle cell formatting
+        private void VisitorData_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (VisitorData.Columns[e.ColumnIndex].Name == "visitor_id_image" && e.Value != null && e.Value is byte[])
+            {
+                byte[] imageBytes = (byte[])e.Value;
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
+                    e.Value = Image.FromStream(ms);
+                }
+            }
+        }
+
+        private void AddViewIDButtonColumn()
+        {
+            if (VisitorData.Columns["viewIDButton"] == null)
+            {
+                DataGridViewButtonColumn viewButton = new DataGridViewButtonColumn();
+                viewButton.Name = "viewIDButton";
+                viewButton.HeaderText = "View ID";
+                viewButton.Text = "View ID";
+                viewButton.UseColumnTextForButtonValue = true;
+                VisitorData.Columns.Add(viewButton);
+            }
+        }
+
+
 
         private void dataGridViewRecords_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
@@ -262,6 +429,37 @@ namespace Prison
                 else if (columnName == "Gender")
                 {
                     ShowGenderDropdown(e.RowIndex, e.ColumnIndex);
+                }
+            }
+
+            if (e.ColumnIndex == VisitorData.Columns["viewIDButton"].Index && e.RowIndex >= 0)
+            {
+                // Get Image from Selected Row
+                byte[] imageBytes = (byte[])VisitorData.Rows[e.RowIndex].Cells["visitor_id_image"].Value;
+
+                if (imageBytes != null)
+                {
+                    using (MemoryStream ms = new MemoryStream(imageBytes))
+                    {
+                        Image visitorIDImage = Image.FromStream(ms);
+
+                        // Show Image in a New Form
+                        Form imageForm = new Form();
+                        imageForm.Text = "Visitor ID";
+                        imageForm.Size = new Size(300, 400);
+
+                        PictureBox pictureBox = new PictureBox();
+                        pictureBox.Dock = DockStyle.Fill;
+                        pictureBox.Image = visitorIDImage;
+                        pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        imageForm.Controls.Add(pictureBox);
+                        imageForm.ShowDialog();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No image found for this visitor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -739,8 +937,10 @@ namespace Prison
 
         private void AddVisitor_Click(object sender, EventArgs e)
         {
-            AddVisitor add = new AddVisitor();
-            add.Show();
+            AddVisitor addVisitorForm = new AddVisitor(this);
+            addVisitorForm.Show();
+          
+
         }
 
         private void LogOutButton_Click(object sender, EventArgs e)
@@ -762,11 +962,7 @@ namespace Prison
             }
         }
 
-        private void VisitorData_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+   
         private void EditVisitorDetails_Click(object sender, EventArgs e)
         {
             VisitorData.ReadOnly = false;

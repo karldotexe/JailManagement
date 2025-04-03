@@ -212,7 +212,7 @@
             // 
             // EditVisitorDetails
             // 
-            this.EditVisitorDetails.Location = new System.Drawing.Point(1240, 40);
+            this.EditVisitorDetails.Location = new System.Drawing.Point(1170, 37);
             this.EditVisitorDetails.Name = "EditVisitorDetails";
             this.EditVisitorDetails.Size = new System.Drawing.Size(131, 55);
             this.EditVisitorDetails.TabIndex = 6;
@@ -222,7 +222,7 @@
             // 
             // AddVisitor
             // 
-            this.AddVisitor.Location = new System.Drawing.Point(1080, 40);
+            this.AddVisitor.Location = new System.Drawing.Point(1010, 37);
             this.AddVisitor.Name = "AddVisitor";
             this.AddVisitor.Size = new System.Drawing.Size(131, 55);
             this.AddVisitor.TabIndex = 5;
@@ -234,7 +234,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Franklin Gothic Book", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(48, 40);
+            this.label3.Location = new System.Drawing.Point(121, 37);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(172, 38);
             this.label3.TabIndex = 1;
@@ -245,11 +245,11 @@
             this.VisitorData.BackgroundColor = System.Drawing.SystemColors.HighlightText;
             this.VisitorData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.VisitorData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.VisitorData.Location = new System.Drawing.Point(36, 130);
+            this.VisitorData.Location = new System.Drawing.Point(167, 130);
             this.VisitorData.Name = "VisitorData";
             this.VisitorData.RowHeadersWidth = 51;
             this.VisitorData.RowTemplate.Height = 24;
-            this.VisitorData.Size = new System.Drawing.Size(1335, 492);
+            this.VisitorData.Size = new System.Drawing.Size(1099, 492);
             this.VisitorData.TabIndex = 0;
             this.VisitorData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.VisitorData_CellContentClick);
             // 
