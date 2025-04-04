@@ -3,6 +3,8 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Prison
 {
@@ -14,6 +16,16 @@ namespace Prison
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.None;
+        }
+
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower(); // Convert hash to a string
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,29 +49,36 @@ namespace Prison
 
         private bool AuthenticateUser(string username, string password)
         {
+            // Hash the entered password
+            string hashedPassword = HashPassword(password);
+
             // Authenticate the user against the database
             using (MySqlConnection conn = new MySqlConnection(connString))
             {
                 conn.Open();
-                string query = "SELECT role FROM users WHERE username = @username AND password = @password";
+                string query = "SELECT role, password FROM users WHERE username = @username";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", password);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     reader.Read();
+                    string storedPasswordHash = reader["password"].ToString();
                     string role = reader["role"].ToString();
-                    Session.Role = role; // Store the role in a global Session variable
-                    return true;
-                }
-                else
-                {
-                    return false;
+
+                    // Compare hashed password with stored hash
+                    if (storedPasswordHash == hashedPassword)
+                    {
+                        Session.Role = role; // Store the role in a global Session variable
+                        return true;
+                    }
                 }
             }
+
+            return false; // Return false if credentials are invalid
         }
+
 
         private void OpenUserDashboard(string username)
         {
@@ -68,18 +87,18 @@ namespace Prison
             // Open different dashboards based on the role
             if (role == "warden")
             {
-                AdminDash mainForm = new AdminDash(); // For warden role, show AdminDash
-                mainForm.ShowDialog();
+                
             }
             else if (role == "desk_officer")
-            {
-              
-            }
-            else if (role == "records_officer")
             {
                 DESKOFFICER RoForm = new DESKOFFICER(); // Create and show a specific form for IT officers
                 RoForm.ShowDialog();
 
+            }
+            else if (role == "records_officer")
+            {
+                AdminDash mainForm = new AdminDash(); // For warden role, show AdminDash
+                mainForm.ShowDialog();
             }
             else if (role == "IT_officer")
             {
@@ -99,11 +118,22 @@ namespace Prison
         {
 
         }
+
+        private void LogInForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 
-    public static class Session
-    {
-        // Store the role of the logged-in user
-        public static string Role { get; set; }
-    }
+
+
+
+
+        public static class Session
+        {
+            // Store the role of the logged-in user
+            public static string Role { get; set; }
+        }
 }

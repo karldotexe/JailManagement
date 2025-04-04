@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeskAddVisitor));
             this.SelectedPictureBox1 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -312,7 +313,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Franklin Gothic Book", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(47, 54);
+            this.label1.Location = new System.Drawing.Point(49, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(219, 47);
             this.label1.TabIndex = 31;
@@ -350,6 +351,7 @@
             this.Controls.Add(this.ContactNumber);
             this.Controls.Add(this.FullName);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DeskAddVisitor";
             this.Text = "DeskAddVisitor";
             this.Load += new System.EventHandler(this.DeskAddVisitor_Load_1);

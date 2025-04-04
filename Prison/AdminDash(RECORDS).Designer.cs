@@ -63,8 +63,9 @@
             this.TopPanel.Controls.Add(this.label1);
             this.TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopPanel.Location = new System.Drawing.Point(0, 0);
+            this.TopPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TopPanel.Name = "TopPanel";
-            this.TopPanel.Size = new System.Drawing.Size(1998, 114);
+            this.TopPanel.Size = new System.Drawing.Size(1523, 93);
             this.TopPanel.TabIndex = 0;
             this.TopPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.TopPanel_Paint);
             // 
@@ -73,9 +74,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 25.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(39, 30);
+            this.label1.Location = new System.Drawing.Point(29, 24);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(569, 49);
+            this.label1.Size = new System.Drawing.Size(455, 41);
             this.label1.TabIndex = 1;
             this.label1.Text = "Welcome, Records Officer";
             // 
@@ -84,9 +86,10 @@
             this.SidePanel.BackColor = System.Drawing.Color.Tomato;
             this.SidePanel.Controls.Add(this.LogOutButton);
             this.SidePanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SidePanel.Location = new System.Drawing.Point(0, 114);
+            this.SidePanel.Location = new System.Drawing.Point(0, 93);
+            this.SidePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SidePanel.Name = "SidePanel";
-            this.SidePanel.Size = new System.Drawing.Size(232, 1872);
+            this.SidePanel.Size = new System.Drawing.Size(174, 1521);
             this.SidePanel.TabIndex = 1;
             this.SidePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.SidePanel_Paint);
             // 
@@ -95,9 +98,10 @@
             this.LogOutButton.AutoSize = true;
             this.LogOutButton.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LogOutButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LogOutButton.Location = new System.Drawing.Point(42, 623);
+            this.LogOutButton.Location = new System.Drawing.Point(32, 506);
+            this.LogOutButton.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LogOutButton.Name = "LogOutButton";
-            this.LogOutButton.Size = new System.Drawing.Size(120, 34);
+            this.LogOutButton.Size = new System.Drawing.Size(95, 26);
             this.LogOutButton.TabIndex = 3;
             this.LogOutButton.Text = "Log Out";
             this.LogOutButton.Click += new System.EventHandler(this.LogOutButton_Click);
@@ -110,16 +114,18 @@
             this.MainPanel.Controls.Add(this.dataGridViewRecords);
             this.MainPanel.Controls.Add(this.AddPrisoner);
             this.MainPanel.Controls.Add(this.RecordsPanel);
-            this.MainPanel.Location = new System.Drawing.Point(232, 1388);
+            this.MainPanel.Location = new System.Drawing.Point(174, 1128);
+            this.MainPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(1761, 598);
+            this.MainPanel.Size = new System.Drawing.Size(1321, 486);
             this.MainPanel.TabIndex = 2;
             // 
             // EditDetails
             // 
-            this.EditDetails.Location = new System.Drawing.Point(1471, 43);
+            this.EditDetails.Location = new System.Drawing.Point(1103, 35);
+            this.EditDetails.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.EditDetails.Name = "EditDetails";
-            this.EditDetails.Size = new System.Drawing.Size(131, 55);
+            this.EditDetails.Size = new System.Drawing.Size(98, 45);
             this.EditDetails.TabIndex = 3;
             this.EditDetails.Text = "Edit Details";
             this.EditDetails.UseVisualStyleBackColor = true;
@@ -130,19 +136,21 @@
             this.dataGridViewRecords.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridViewRecords.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewRecords.Location = new System.Drawing.Point(148, 140);
+            this.dataGridViewRecords.Location = new System.Drawing.Point(111, 114);
+            this.dataGridViewRecords.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridViewRecords.Name = "dataGridViewRecords";
             this.dataGridViewRecords.RowHeadersWidth = 51;
             this.dataGridViewRecords.RowTemplate.Height = 24;
-            this.dataGridViewRecords.Size = new System.Drawing.Size(1466, 399);
+            this.dataGridViewRecords.Size = new System.Drawing.Size(1100, 324);
             this.dataGridViewRecords.TabIndex = 2;
             this.dataGridViewRecords.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRecords_CellContentClick);
             // 
             // AddPrisoner
             // 
-            this.AddPrisoner.Location = new System.Drawing.Point(1311, 43);
+            this.AddPrisoner.Location = new System.Drawing.Point(983, 35);
+            this.AddPrisoner.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AddPrisoner.Name = "AddPrisoner";
-            this.AddPrisoner.Size = new System.Drawing.Size(131, 55);
+            this.AddPrisoner.Size = new System.Drawing.Size(98, 45);
             this.AddPrisoner.TabIndex = 1;
             this.AddPrisoner.Text = "Add Prisoner";
             this.AddPrisoner.UseVisualStyleBackColor = true;
@@ -152,9 +160,10 @@
             // 
             this.RecordsPanel.AutoSize = true;
             this.RecordsPanel.Font = new System.Drawing.Font("Franklin Gothic Book", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RecordsPanel.Location = new System.Drawing.Point(141, 44);
+            this.RecordsPanel.Location = new System.Drawing.Point(106, 36);
+            this.RecordsPanel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RecordsPanel.Name = "RecordsPanel";
-            this.RecordsPanel.Size = new System.Drawing.Size(269, 38);
+            this.RecordsPanel.Size = new System.Drawing.Size(228, 34);
             this.RecordsPanel.TabIndex = 0;
             this.RecordsPanel.Text = "Prisoner Records";
             // 
@@ -166,25 +175,28 @@
             this.panel1.Controls.Add(this.AddVisitor);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.VisitorData);
-            this.panel1.Location = new System.Drawing.Point(232, 764);
+            this.panel1.Location = new System.Drawing.Point(174, 621);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1761, 625);
+            this.panel1.Size = new System.Drawing.Size(1321, 508);
             this.panel1.TabIndex = 3;
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(1204, 157);
+            this.closeButton.Location = new System.Drawing.Point(903, 128);
+            this.closeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(75, 23);
+            this.closeButton.Size = new System.Drawing.Size(56, 19);
             this.closeButton.TabIndex = 7;
             this.closeButton.Text = "Close";
             this.closeButton.UseVisualStyleBackColor = true;
             // 
             // EditVisitorDetails
             // 
-            this.EditVisitorDetails.Location = new System.Drawing.Point(1403, 56);
+            this.EditVisitorDetails.Location = new System.Drawing.Point(1052, 46);
+            this.EditVisitorDetails.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.EditVisitorDetails.Name = "EditVisitorDetails";
-            this.EditVisitorDetails.Size = new System.Drawing.Size(131, 55);
+            this.EditVisitorDetails.Size = new System.Drawing.Size(98, 45);
             this.EditVisitorDetails.TabIndex = 6;
             this.EditVisitorDetails.Text = "Edit Details";
             this.EditVisitorDetails.UseVisualStyleBackColor = true;
@@ -192,9 +204,10 @@
             // 
             // AddVisitor
             // 
-            this.AddVisitor.Location = new System.Drawing.Point(1243, 56);
+            this.AddVisitor.Location = new System.Drawing.Point(932, 46);
+            this.AddVisitor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AddVisitor.Name = "AddVisitor";
-            this.AddVisitor.Size = new System.Drawing.Size(131, 55);
+            this.AddVisitor.Size = new System.Drawing.Size(98, 45);
             this.AddVisitor.TabIndex = 5;
             this.AddVisitor.Text = "Add Visitor";
             this.AddVisitor.UseVisualStyleBackColor = true;
@@ -204,9 +217,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(189, 56);
+            this.label3.Location = new System.Drawing.Point(142, 46);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(180, 39);
+            this.label3.Size = new System.Drawing.Size(146, 32);
             this.label3.TabIndex = 1;
             this.label3.Text = "Visitor Log";
             // 
@@ -215,11 +229,12 @@
             this.VisitorData.BackgroundColor = System.Drawing.SystemColors.HighlightText;
             this.VisitorData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.VisitorData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.VisitorData.Location = new System.Drawing.Point(196, 132);
+            this.VisitorData.Location = new System.Drawing.Point(147, 107);
+            this.VisitorData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.VisitorData.Name = "VisitorData";
             this.VisitorData.RowHeadersWidth = 51;
             this.VisitorData.RowTemplate.Height = 24;
-            this.VisitorData.Size = new System.Drawing.Size(1340, 461);
+            this.VisitorData.Size = new System.Drawing.Size(1005, 375);
             this.VisitorData.TabIndex = 0;
             this.VisitorData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.VisitorData_CellContentClick);
             // 
@@ -227,11 +242,12 @@
             // 
             this.PendingRequestsGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.PendingRequestsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.PendingRequestsGrid.Location = new System.Drawing.Point(148, 125);
+            this.PendingRequestsGrid.Location = new System.Drawing.Point(111, 102);
+            this.PendingRequestsGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PendingRequestsGrid.Name = "PendingRequestsGrid";
             this.PendingRequestsGrid.RowHeadersWidth = 51;
             this.PendingRequestsGrid.RowTemplate.Height = 24;
-            this.PendingRequestsGrid.Size = new System.Drawing.Size(1466, 446);
+            this.PendingRequestsGrid.Size = new System.Drawing.Size(1100, 362);
             this.PendingRequestsGrid.TabIndex = 4;
             this.PendingRequestsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PendingRequestsGrid_CellContentClick);
             // 
@@ -240,27 +256,29 @@
             this.panel2.BackColor = System.Drawing.Color.Silver;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.PendingRequestsGrid);
-            this.panel2.Location = new System.Drawing.Point(232, 114);
+            this.panel2.Location = new System.Drawing.Point(174, 93);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1766, 657);
+            this.panel2.Size = new System.Drawing.Size(1324, 534);
             this.panel2.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(150, 46);
+            this.label2.Location = new System.Drawing.Point(112, 37);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(253, 39);
+            this.label2.Size = new System.Drawing.Size(205, 32);
             this.label2.TabIndex = 5;
             this.label2.Text = "Pending Visitor";
             // 
             // AdminDash
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1924, 1055);
+            this.ClientSize = new System.Drawing.Size(1540, 687);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SidePanel);
@@ -268,7 +286,7 @@
             this.Controls.Add(this.TopPanel);
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AdminDash";
             this.Text = "Records Officer Dashboard";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

@@ -2,6 +2,8 @@
 using System;
 using System.Data;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Prison
 {
@@ -23,6 +25,9 @@ namespace Prison
             Roles.Items.Add("Desk Officer");
             Roles.Items.Add("Warden");
             Roles.Items.Add("IT Officer");
+
+            LogOut.Dock = DockStyle.None; // To remove docking
+
         }
 
 
@@ -51,15 +56,15 @@ namespace Prison
             // Ensure the click is within a row (not the header)
             if (e.RowIndex >= 0)
             {
-                // Get the username, password, and role from the selected row
-                string username = dataGridView1.Rows[e.RowIndex].Cells["username"].Value.ToString();
-                string password = dataGridView1.Rows[e.RowIndex].Cells["password"].Value.ToString();
-                string role = dataGridView1.Rows[e.RowIndex].Cells["role"].Value.ToString();
+                // Get the username and role from the selected row
+                string username = dataGridView1.Rows[e.RowIndex].Cells["Username"].Value.ToString();
+                string role = dataGridView1.Rows[e.RowIndex].Cells["Role"].Value.ToString();
 
                 // Display or use these values as needed
-                MessageBox.Show($"Username: {username}\nPassword: {password}\nRole: {role}");
+                MessageBox.Show($"Username: {username}\nRole: {role}");
             }
         }
+
 
         private void LoadAccounts()
         {
@@ -73,14 +78,38 @@ namespace Prison
                 {
                     conn.Open();
 
-                    // Query to fetch user account data (username, password, and role)
-                    string query = "SELECT username as 'Username', password as 'Password', role as 'Role' FROM users";
+                    // Query to fetch only the username and role (excluding password)
+                    string query = "SELECT username as 'Username', role as 'Role' FROM users";
 
                     // Execute the query
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt); // Fill the DataTable with the fetched data
+
+                    // Map the role values to their human-readable format
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string role = row["Role"].ToString();
+                        switch (role)
+                        {
+                            case "desk_officer":
+                                row["Role"] = "Desk Officer";
+                                break;
+                            case "records_officer":
+                                row["Role"] = "Records Officer";
+                                break;
+                            case "warden":
+                                row["Role"] = "Warden";
+                                break;
+                            case "IT_officer":
+                                row["Role"] = "IT Officer";
+                                break;
+                            default:
+                                row["Role"] = role; // Leave as is if no match
+                                break;
+                        }
+                    }
 
                     // Bind the modified data to the DataGridView
                     dataGridView1.DataSource = dt;
@@ -95,6 +124,9 @@ namespace Prison
                 }
             }
         }
+
+
+
 
 
         private void Confirm_Click_1(object sender, EventArgs e)
@@ -129,6 +161,9 @@ namespace Prison
                     MessageBox.Show("Invalid role selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
             }
+
+            // Hash the password before storing it
+            string hashedPassword = HashPassword(password);
 
             // Database connection string
             string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";
@@ -170,11 +205,11 @@ namespace Prison
                     // Create the command and add parameters
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password); // Store the password as plain text
+                    cmd.Parameters.AddWithValue("@password", hashedPassword); // Store the hashed password
                     cmd.Parameters.AddWithValue("@role", role);
 
                     // Debugging: Check the values being passed to the query
-                    Console.WriteLine($"Inserting: Username={username}, Password={password}, Role={role}");
+                    Console.WriteLine($"Inserting: Username={username}, Password={hashedPassword}, Role={role}");
 
                     // Execute the query
                     int resultExecute = cmd.ExecuteNonQuery();
@@ -200,6 +235,25 @@ namespace Prison
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Helper method to hash the password using SHA256
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Convert password to byte array and compute the hash
+                byte[] data = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Convert byte array back to string
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in data)
+                {
+                    sb.Append(b.ToString("x2")); // Convert to hexadecimal
+                }
+
+                return sb.ToString(); // Return the hashed password
             }
         }
 
