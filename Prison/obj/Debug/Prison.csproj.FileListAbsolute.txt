@@ -51,3 +51,6 @@ C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.dll
 C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.xml
 C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.xml
 C:\Users\Lenovo\source\repos\Prison\Prison\bin\Debug\AForge.Video.DirectShow.xml
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.AccountCreation.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.DESKOFFICER.resources
+C:\Users\Lenovo\source\repos\Prison\Prison\obj\Debug\Prison.DeskAddVisitor.resources

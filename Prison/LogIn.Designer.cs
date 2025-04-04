@@ -62,6 +62,7 @@
             this.groupBox1.Size = new System.Drawing.Size(1007, 1079);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // label3
             // 
@@ -89,7 +90,6 @@
             this.label2.Size = new System.Drawing.Size(496, 54);
             this.label2.TabIndex = 6;
             this.label2.Text = "Welcome Back, Admin!";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // button1
             // 
@@ -140,7 +140,6 @@
             this.lblStatus.Size = new System.Drawing.Size(129, 16);
             this.lblStatus.TabIndex = 5;
             this.lblStatus.Text = "Incorrect Credentials";
-            this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // LogInForm
             // 
@@ -158,7 +157,6 @@
             this.Name = "LogInForm";
             this.Text = "Log In";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.LogIn_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -108,6 +108,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountCreation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountCreation.Designer.cs">
+      <DependentUpon>AccountCreation.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddPrisonerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,20 +126,32 @@
     <Compile Include="AddVisitor.Designer.cs">
       <DependentUpon>AddVisitor.cs</DependentUpon>
     </Compile>
+    <Compile Include="DeskAddVisitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeskAddVisitor.Designer.cs">
+      <DependentUpon>DeskAddVisitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogIn.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogIn.Designer.cs">
       <DependentUpon>LogIn.cs</DependentUpon>
     </Compile>
-    <Compile Include="AdminDash.cs">
+    <Compile Include="AdminDash%28RECORDS%29.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AdminDash.Designer.cs">
-      <DependentUpon>AdminDash.cs</DependentUpon>
+    <Compile Include="AdminDash%28RECORDS%29.Designer.cs">
+      <DependentUpon>AdminDash%28RECORDS%29.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DESKOFFICER.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DESKOFFICER.Designer.cs">
+      <DependentUpon>DESKOFFICER.cs</DependentUpon>
+    </Compile>
     <Compile Include="RoundedButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -143,17 +161,23 @@
     <Compile Include="VisitorID.Designer.cs">
       <DependentUpon>VisitorID.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AccountCreation.resx">
+      <DependentUpon>AccountCreation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddPrisonerForm.resx">
       <DependentUpon>AddPrisonerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddVisitor.resx">
       <DependentUpon>AddVisitor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DeskAddVisitor.resx">
+      <DependentUpon>DeskAddVisitor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogIn.resx">
       <DependentUpon>LogIn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AdminDash.resx">
-      <DependentUpon>AdminDash.cs</DependentUpon>
+    <EmbeddedResource Include="AdminDash%28RECORDS%29.resx">
+      <DependentUpon>AdminDash%28RECORDS%29.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -164,6 +188,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DESKOFFICER.resx">
+      <DependentUpon>DESKOFFICER.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VisitorID.resx">
       <DependentUpon>VisitorID.cs</DependentUpon>
     </EmbeddedResource>

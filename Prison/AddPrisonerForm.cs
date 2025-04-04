@@ -4,10 +4,11 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace Prison
 {
-    public partial class AddPrisonerForm : Form
+    public partial class AddPrisonerForm : Form //THIS IS THE ADD VISITOR FORM FOR RECORDS OFFICER
     {
         private string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";
 
@@ -63,7 +64,7 @@ namespace Prison
                 }
             };
 
-            // Age validation - Only numbers allowed, must be between 1-120
+            // Age validation - Only numbers allowed, must be between 18-70
             txtAge.KeyPress += (s, e) => {
                 if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 {
@@ -73,13 +74,18 @@ namespace Prison
             };
 
             txtAge.TextChanged += (s, e) => {
+                // Allow age to be typed freely, but check when input is finished
                 if (int.TryParse(txtAge.Text, out int age))
                 {
-                    if (age < 18 || age > 100)
+                    if (age < 18)
                     {
-                        ShowValidationError("Age must be valid");
-                        txtAge.Text = "100"; // Reset to max allowed value
-                        txtAge.SelectionStart = txtAge.Text.Length;
+                        ShowValidationError("Age cannot be less than 18");
+                        txtAge.SelectionStart = txtAge.Text.Length; // Keep the cursor at the end
+                    }
+                    else if (age > 70)
+                    {
+                        ShowValidationError("Age cannot be greater than 70");
+                        txtAge.SelectionStart = txtAge.Text.Length; // Keep the cursor at the end
                     }
                 }
             };
@@ -93,7 +99,7 @@ namespace Prison
                 }
             };
 
-            // Contact number validation - Only 11 digits allowed
+            // Cell number validation - Only numbers allowed
             txtCellNumber.KeyPress += (s, e) => {
                 if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 {
@@ -128,9 +134,11 @@ namespace Prison
                     txtPrisonerID.SelectionStart = txtPrisonerID.Text.Length; // Keep cursor at the end
                 }
             };
-
-
         }
+
+
+
+
 
 
         private void PreventDateTyping(object sender, KeyPressEventArgs e)
@@ -167,10 +175,10 @@ namespace Prison
                 {
                     conn.Open();
                     string query = @"INSERT INTO prisoners 
-                        (full_name, id_number, age, contact_number, prisoner_case, 
-                         detained_date, cell_number, sentence_start, sentence_end, gender) 
-                        VALUES 
-                        (@name, @id, @age, @contact, @case, @detained, @cell, @start, @end, @gender)";
+                            (full_name, id_number, age, contact_number, prisoner_case, 
+                             detained_date, cell_number, sentence_start, sentence_end, gender, status) 
+                            VALUES 
+                            (@name, @id, @age, @contact, @case, @detained, @cell, @start, @end, @gender, @status)";
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@name", txtFullName.Text.Trim());
@@ -183,6 +191,7 @@ namespace Prison
                     cmd.Parameters.AddWithValue("@start", dtpSentenceStart.Value);
                     cmd.Parameters.AddWithValue("@end", dtpSentenceEnd.Value);
                     cmd.Parameters.AddWithValue("@gender", cmbGender.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@status", Status.SelectedItem.ToString()); // Add the status value
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Prisoner record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -202,7 +211,27 @@ namespace Prison
 
         private void AddPrisonerForm_Load(object sender, EventArgs e)
         {
+            // Populate the ComboBox with the status options
+            Status.Items.Clear();
+            Status.Items.Add("Standard Detention");
+            Status.Items.Add("Pending Trial");
+            Status.Items.Add("Awaiting Bail");
+            Status.Items.Add("Non-Violent");
+            Status.Items.Add("Remanded");
+            Status.Items.Add("On Probation");
+            Status.Items.Add("Work-Release");
+            Status.Items.Add("Low-Risk ");
+            Status.Items.Add("Moderate-Risk ");
+            Status.Items.Add("High-Risk ");
+
+            // Set a default status
+            Status.SelectedIndex = 0;  // Default to "Standard Detention"
+        }
+
+        private void txtAge_TextChanged(object sender, EventArgs e)
+        {
 
         }
+
     }
 }

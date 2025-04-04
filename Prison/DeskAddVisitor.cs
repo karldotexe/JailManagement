@@ -11,20 +11,20 @@ using System.IO;
 
 namespace Prison
 {
-    public partial class AddVisitor : Form
+    public partial class DeskAddVisitor : Form
     {
         private string connString = "Server=localhost;Database=prison_management;Uid=root;Pwd=;";
 
 
-        public AddVisitor()
+        public DeskAddVisitor()
         {
             InitializeComponent();
             SetupValidations();
         }
 
-        private AdminDash parentForm;  // Declare a reference to AdminDash
+        private DESKOFFICER parentForm;  // Declare a reference to AdminDash
 
-        public AddVisitor(AdminDash parent)  // Constructor with AdminDash parameter
+        public DeskAddVisitor(DESKOFFICER parent)  // Constructor with AdminDash parameter
         {
             InitializeComponent();
             this.parentForm = parent;  // Assign the parent form to the reference
@@ -35,8 +35,8 @@ namespace Prison
         {
             if (image != null)
             {
-                SelectedPictureBox.Image = image;
-                SelectedPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Ensure the image is displayed correctly
+                SelectedPictureBox1.Image = image;
+                SelectedPictureBox1.SizeMode = PictureBoxSizeMode.Zoom; // Ensure the image is displayed correctly
             }
             else
             {
@@ -48,14 +48,14 @@ namespace Prison
         {
             using (MemoryStream ms = new MemoryStream(imageData))
             {
-                SelectedPictureBox.Image = Image.FromStream(ms);
+                SelectedPictureBox1.Image = Image.FromStream(ms);
             }
         }
 
 
         private VisitorID VisitorID; // Declare parent form reference
 
-        public AddVisitor(VisitorID parent)
+        public DeskAddVisitor(VisitorID parent)
         {
             InitializeComponent();
             this.VisitorID = parent; // Assign parent form reference
@@ -63,23 +63,12 @@ namespace Prison
         }
 
 
-        private void ValidID_Click(object sender, EventArgs e)
-        {
-            if (cmbPrisoner.SelectedValue == null || cmbPrisoner.SelectedValue.ToString() == "0")
-            {
-                MessageBox.Show("Please select a prisoner first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int selectedPrisonerId = Convert.ToInt32(cmbPrisoner.SelectedValue);
-            VisitorID visitorForm = new VisitorID(this, selectedPrisonerId); // Pass prisoner ID
-            visitorForm.Show();
-        }
-
+      
+       
 
 
         // When the form loads, populate the ComboBox with prisoner names.
-        private void AddVisitor_Load(object sender, EventArgs e)
+        private void DeskAddVisitor_Load(object sender, EventArgs e)
         {
             LoadPrisonerNames();  // Populate the ComboBox when the form loads.
 
@@ -193,14 +182,14 @@ namespace Prison
 
             ValidationError.Text = message;  // Show error message
             ValidationError.Visible = true;   // Make the error label visible
-            ValidationErrorTimer.Start();     // Start the timer to hide the error
+            ValidationErrorDesk.Start();     // Start the timer to hide the error
         }
 
         // Timer to hide validation error message after a delay
         private void ValidationErrorTimer_Tick(object sender, EventArgs e)
         {
             ValidationError.Visible = false;  // Hide error after the timer ticks
-            ValidationErrorTimer.Stop();      // Stop the timer
+            ValidationErrorDesk.Stop();      // Stop the timer
         }
 
 
@@ -214,68 +203,11 @@ namespace Prison
         // Save the visitor information to the database
         private void btnSave_Click(object sender, EventArgs e)
         {
-         
+
         }
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(FullName.Text) ||
-       string.IsNullOrWhiteSpace(ContactNumber.Text) ||
-       string.IsNullOrWhiteSpace(VisitPurpose.Text) ||
-       string.IsNullOrWhiteSpace(Address.Text) ||
-       cmbPrisoner.SelectedValue == null || cmbPrisoner.SelectedValue.ToString() == "0" ||
-       string.IsNullOrWhiteSpace(cmbRelationship.Text) ||
-       SelectedPictureBox.Image == null)  // Ensure image is selected
-            {
-                ShowValidationError("Please fill in all fields and select an image.");
-                return;
-            }
-
-            try
-            {
-                // Ensure the image is properly converted before saving
-                byte[] imageBytes = ConvertImageToByteArray(SelectedPictureBox.Image);
-                if (imageBytes == null)
-                {
-                    MessageBox.Show("The image could not be converted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                using (MySqlConnection conn = new MySqlConnection(connString))
-                {
-                    conn.Open();
-                    string query = @"INSERT INTO visitors 
-                            (full_name, contact_number, visit_purpose, address, prisoner_id, 
-                            relationship_to_prisoner, visit_date, visit_time_in, visit_time_out, visitor_id_image)
-                            VALUES 
-                            (@name, @contact, @purpose, @address, @prisonerId, 
-                            @relationship, @visitDate, @visitTimeIn, @visitTimeOut, @image)";
-
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", FullName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@contact", ContactNumber.Text.Trim());
-                        cmd.Parameters.AddWithValue("@purpose", VisitPurpose.Text.Trim());
-                        cmd.Parameters.AddWithValue("@address", Address.Text.Trim());
-                        cmd.Parameters.AddWithValue("@prisonerId", cmbPrisoner.SelectedValue);
-                        cmd.Parameters.AddWithValue("@relationship", cmbRelationship.Text.Trim());
-                        cmd.Parameters.AddWithValue("@visitDate", VisitDate.Value.Date);
-                        cmd.Parameters.AddWithValue("@visitTimeIn", VisitTimeIn.Value.ToString("HH:mm:ss"));
-                        cmd.Parameters.AddWithValue("@visitTimeOut", VisitTimeOut.Value.ToString("HH:mm:ss"));
-                        cmd.Parameters.AddWithValue("@image", imageBytes);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                MessageBox.Show("Visitor record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                parentForm?.LoadVisitorData(); // Refresh the visitor list in the parent form
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to save visitor information: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
 
@@ -283,7 +215,7 @@ namespace Prison
 
         private string selectedFilePath = ""; // Store the selected file path
 
-    
+
 
 
         private void VisitTimeIn_ValueChanged(object sender, EventArgs e)
@@ -293,44 +225,11 @@ namespace Prison
 
         private void File_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(selectedFilePath)) // If no file is selected, open file dialog
-            {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                {
-                    openFileDialog.Title = "Select an Image";
-                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        selectedFilePath = openFileDialog.FileName;
-                        try
-                        {
-                            SelectedPictureBox.Image = new Bitmap(selectedFilePath); // Try loading the image
-                            SelectedPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                            File.Text = "Preview Image"; // Change button text after selection
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Failed to load image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-            }
-            else // If file is already selected, preview it
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(selectedFilePath); // Open the image with default viewer
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to open image: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+           
         }
 
 
-       
+
 
         private byte[] ConvertImageToByteArray(Image image)
         {
@@ -355,8 +254,132 @@ namespace Prison
             }
         }
 
+        private void AddButton_Click_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FullName.Text) ||
+                  string.IsNullOrWhiteSpace(ContactNumber.Text) ||
+                  string.IsNullOrWhiteSpace(VisitPurpose.Text) ||
+                  string.IsNullOrWhiteSpace(Address.Text) ||
+                  cmbPrisoner.SelectedValue == null || cmbPrisoner.SelectedValue.ToString() == "0" ||
+                  string.IsNullOrWhiteSpace(cmbRelationship.Text) ||
+                  SelectedPictureBox1.Image == null)
+            {
+                ShowValidationError("Please fill in all fields and select an image.");
+                return;
+            }
 
+            try
+            {
+                byte[] imageBytes = ConvertImageToByteArray(SelectedPictureBox1.Image);
+                if (imageBytes == null)
+                {
+                    MessageBox.Show("The image could not be converted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
+                using (MySqlConnection conn = new MySqlConnection(connString))
+                {
+                    conn.Open();
+                    string query = @"INSERT INTO pending_visitor_requests 
+                                    (full_name, contact_number, visit_purpose, address, prisoner_id, 
+                                     relationship_to_prisoner, visit_date, visit_time_in, visit_time_out, visitor_id_image)
+                                    VALUES 
+                                    (@name, @contact, @purpose, @address, @prisonerId, 
+                                     @relationship, @visitDate, @visitTimeIn, @visitTimeOut, @image)";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", FullName.Text.Trim());
+                        cmd.Parameters.AddWithValue("@contact", ContactNumber.Text.Trim());
+                        cmd.Parameters.AddWithValue("@purpose", VisitPurpose.Text.Trim());
+                        cmd.Parameters.AddWithValue("@address", Address.Text.Trim());
+                        cmd.Parameters.AddWithValue("@prisonerId", cmbPrisoner.SelectedValue);
+                        cmd.Parameters.AddWithValue("@relationship", cmbRelationship.Text.Trim());
+                        cmd.Parameters.AddWithValue("@visitDate", VisitDate.Value.Date);
+                        cmd.Parameters.AddWithValue("@visitTimeIn", VisitTimeIn.Value.ToString("HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@visitTimeOut", VisitTimeOut.Value.ToString("HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@image", imageBytes);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Visitor request submitted successfully and is pending approval.", "Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close(); // Just close the form for now — no admin update necessary
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to submit visitor request: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeskAddVisitor_Load_1(object sender, EventArgs e)
+        {
+            LoadPrisonerNames();  // Populate the ComboBox when the form loads.
+
+            // ✅ Set VisitTimeIn to Time Only
+            VisitTimeIn.Format = DateTimePickerFormat.Custom;
+            VisitTimeIn.CustomFormat = "HH:mm";  // Only show time (24-hour format)
+            VisitTimeIn.ShowUpDown = true;  // No calendar view, only up-down time picker
+
+            // ✅ Set VisitTimeOut to Time Only
+            VisitTimeOut.Format = DateTimePickerFormat.Custom;
+            VisitTimeOut.CustomFormat = "HH:mm";  // Only show time (24-hour format)
+            VisitTimeOut.ShowUpDown = true;  // No calendar view, only up-down time picker
+        }
+
+      
+
+        private void File_Click_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedFilePath)) // If no file is selected, open file dialog
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Title = "Select an Image";
+                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        selectedFilePath = openFileDialog.FileName;
+                        try
+                        {
+                            SelectedPictureBox1.Image = new Bitmap(selectedFilePath); // Try loading the image
+                            SelectedPictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                            File.Text = "Preview Image"; // Change button text after selection
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to load image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            else // If file is already selected, preview it
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(selectedFilePath); // Open the image with default viewer
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to open image: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void ValidID_Click(object sender, EventArgs e)
+        {
+            if (cmbPrisoner.SelectedValue == null || cmbPrisoner.SelectedValue.ToString() == "0")
+            {
+                MessageBox.Show("Please select a prisoner first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int selectedPrisonerId = Convert.ToInt32(cmbPrisoner.SelectedValue);
+            VisitorID visitorForm = new VisitorID(this, selectedPrisonerId); // Pass prisoner ID
+            visitorForm.Show();
+        }
     }
 }
 

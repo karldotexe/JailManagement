@@ -104,7 +104,10 @@
             this.cmbRelationship.Items.AddRange(new object[] {
             "Family",
             "Friend",
-            "Church"});
+            "Church",
+            "Lawyer",
+            "Government",
+            "Media"});
             this.cmbRelationship.Location = new System.Drawing.Point(600, 168);
             this.cmbRelationship.Name = "cmbRelationship";
             this.cmbRelationship.Size = new System.Drawing.Size(191, 24);

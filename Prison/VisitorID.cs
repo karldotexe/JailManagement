@@ -15,15 +15,32 @@ namespace Prison
         private VideoCaptureDevice videoSource;
         private Bitmap capturedImage;
         private AddVisitor parentForm;  // Reference to AddVisitor
-
+        private DeskAddVisitor parentFormDesk;
         private int visitorId; // Store the correct visitor ID
+       
+
+      
 
         public VisitorID(AddVisitor parent, int visitorId)
         {
             InitializeComponent();
             this.parentForm = parent;
             this.visitorId = visitorId; // Assign the correct visitor ID
+
+           
         }
+
+        public VisitorID(DeskAddVisitor parent, int visitorId)
+        {
+            InitializeComponent();
+            this.parentFormDesk = parent;
+            this.visitorId = visitorId; // Assign the correct visitor ID
+
+
+        }
+
+
+
 
         private void VisitorID_Load(object sender, EventArgs e)
         {
@@ -103,7 +120,7 @@ namespace Prison
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Image", imageBytes);
-                      
+
                         cmd.Parameters.AddWithValue("@VisitorId", this.visitorId); // Use the stored visitor ID
                         cmd.ExecuteNonQuery();
                     }
@@ -118,9 +135,18 @@ namespace Prison
 
             MessageBox.Show("Image saved");
             this.Close();
+
+            // ✅ Send Captured Image to AddVisitor
+            if (parentFormDesk != null)
+            {
+                parentFormDesk.SetCapturedImage(capturedImage);
+            }
+
+            
+
         }
 
-      
+
 
 
         private void VisitorID_FormClosing(object sender, FormClosingEventArgs e)
