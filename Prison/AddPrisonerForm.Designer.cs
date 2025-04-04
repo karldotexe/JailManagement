@@ -283,6 +283,7 @@
             this.Status.Name = "Status";
             this.Status.Size = new System.Drawing.Size(307, 24);
             this.Status.TabIndex = 24;
+            this.Status.SelectedIndexChanged += new System.EventHandler(this.Status_SelectedIndexChanged);
             // 
             // label12
             // 

@@ -166,20 +166,70 @@ namespace Prison
 
         private void AddButton_Click(object sender, EventArgs e)
         {
+            // Check if any required field is empty
+            if (string.IsNullOrWhiteSpace(txtFullName.Text) ||
+                string.IsNullOrWhiteSpace(txtPrisonerID.Text) ||
+                string.IsNullOrWhiteSpace(txtAge.Text) ||
+                string.IsNullOrWhiteSpace(txtContactNumber.Text) ||
+                string.IsNullOrWhiteSpace(txtCase.Text) ||
+                string.IsNullOrWhiteSpace(txtCellNumber.Text) ||
+                cmbGender.SelectedItem == null ||
+                Status.SelectedItem == null)
+            {
+                MessageBox.Show("All fields are required. Please fill in all the information.",
+                                "Incomplete Information",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;  // Stop the method execution if any field is empty
+            }
 
-   
+            string selectedStatus = Status.SelectedItem.ToString();
+            bool requiresApproval = selectedStatus == "High-Risk" ||
+                                    selectedStatus == "Maximum Security" ||
+                                    selectedStatus == "Protective Custody" ||
+                                    selectedStatus == "High-Profile Case" ||
+                                    selectedStatus == "Under Investigation";
 
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connString))
                 {
                     conn.Open();
-                    string query = @"INSERT INTO prisoners 
-                            (full_name, id_number, age, contact_number, prisoner_case, 
-                             detained_date, cell_number, sentence_start, sentence_end, gender, status) 
-                            VALUES 
-                            (@name, @id, @age, @contact, @case, @detained, @cell, @start, @end, @gender, @status)";
 
+                    // Check for duplicate name or ID in both prisoners and pending_prisoners
+                    string checkQuery = @"SELECT COUNT(*) FROM (
+                                  SELECT full_name, id_number FROM prisoners
+                                  UNION ALL
+                                  SELECT full_name, id_number FROM pending_prisoners
+                              ) AS combined
+                              WHERE full_name = @name OR id_number = @id";
+
+                    MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn);
+                    checkCmd.Parameters.AddWithValue("@name", txtFullName.Text.Trim());
+                    checkCmd.Parameters.AddWithValue("@id", txtPrisonerID.Text.Trim());
+
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+                    if (count > 0)
+                    {
+                        MessageBox.Show("A prisoner with the same name or ID already exists.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Choose table
+                    string query = requiresApproval ?
+                        @"INSERT INTO pending_prisoners 
+                        (full_name, id_number, age, contact_number, prisoner_case, 
+                         detained_date, cell_number, sentence_start, sentence_end, gender, status) 
+                        VALUES 
+                        (@name, @id, @age, @contact, @case, @detained, @cell, @start, @end, @gender, @status)"
+                                        :
+                                        @"INSERT INTO prisoners 
+                        (full_name, id_number, age, contact_number, prisoner_case, 
+                         detained_date, cell_number, sentence_start, sentence_end, gender, status) 
+                        VALUES 
+                        (@name, @id, @age, @contact, @case, @detained, @cell, @start, @end, @gender, @status)";
+
+                    // Insert
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@name", txtFullName.Text.Trim());
                     cmd.Parameters.AddWithValue("@id", txtPrisonerID.Text.Trim());
@@ -191,23 +241,38 @@ namespace Prison
                     cmd.Parameters.AddWithValue("@start", dtpSentenceStart.Value);
                     cmd.Parameters.AddWithValue("@end", dtpSentenceEnd.Value);
                     cmd.Parameters.AddWithValue("@gender", cmbGender.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("@status", Status.SelectedItem.ToString()); // Add the status value
+                    cmd.Parameters.AddWithValue("@status", selectedStatus);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Prisoner record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Refresh records in AdminDash
+                    if (requiresApproval)
+                    {
+                        MessageBox.Show("This record requires Warden approval. Sent to Pending Prisoners.", "Pending", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Prisoner record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    // Refresh Admin view
                     AdminDash adminDash = Application.OpenForms.OfType<AdminDash>().FirstOrDefault();
                     adminDash?.LoadPrisonerRecords();
+
+                    this.Close();
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("Information incomplete.");
+                MessageBox.Show("Information incomplete or invalid.");
             }
-
-            this.Close();
         }
+
+
+        //Maximum Security
+        //Protective Custody
+        //High-Profile Case
+        //Under Investigation
+        //Medical Hold(Severe Cases)
 
         private void AddPrisonerForm_Load(object sender, EventArgs e)
         {
@@ -220,9 +285,12 @@ namespace Prison
             Status.Items.Add("Remanded");
             Status.Items.Add("On Probation");
             Status.Items.Add("Work-Release");
-            Status.Items.Add("Low-Risk ");
-            Status.Items.Add("Moderate-Risk ");
-            Status.Items.Add("High-Risk ");
+            Status.Items.Add("Low-Risk");
+            Status.Items.Add("Moderate-Risk");
+            Status.Items.Add("High-Risk");
+            Status.Items.Add("High-Profile Case");
+            Status.Items.Add("Under Investigation");
+           
 
             // Set a default status
             Status.SelectedIndex = 0;  // Default to "Standard Detention"
@@ -233,5 +301,9 @@ namespace Prison
 
         }
 
+        private void Status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

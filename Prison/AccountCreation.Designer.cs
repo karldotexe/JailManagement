@@ -126,7 +126,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(291, 50);
+            this.label4.Location = new System.Drawing.Point(273, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(464, 56);
             this.label4.TabIndex = 10;
@@ -134,7 +134,7 @@
             // 
             // LogOut
             // 
-            this.LogOut.Location = new System.Drawing.Point(1250, 50);
+            this.LogOut.Location = new System.Drawing.Point(258, 818);
             this.LogOut.Name = "LogOut";
             this.LogOut.Size = new System.Drawing.Size(138, 50);
             this.LogOut.TabIndex = 8;
@@ -148,7 +148,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, -1);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 944);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 1096);
             this.flowLayoutPanel1.TabIndex = 6;
             // 
             // AccountCreation

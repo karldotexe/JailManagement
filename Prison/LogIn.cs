@@ -87,7 +87,8 @@ namespace Prison
             // Open different dashboards based on the role
             if (role == "warden")
             {
-                
+                Warden WardenForm = new Warden(); // For warden role, show AdminDash
+                WardenForm.ShowDialog();
             }
             else if (role == "desk_officer")
             {

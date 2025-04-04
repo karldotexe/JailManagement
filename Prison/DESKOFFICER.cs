@@ -128,6 +128,7 @@ namespace Prison
                     // Prevent the addition of extra rows (blank row at the bottom)
                     VisitorDataRC.AllowUserToAddRows = false;
                     VisitorDataRC.Refresh();
+                    VisitorDataRC.ReadOnly = true;
                 }
             }
         }

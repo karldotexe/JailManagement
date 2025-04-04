@@ -32,12 +32,10 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
-            this.EditVisitorDetails = new System.Windows.Forms.Button();
             this.AddVisitor = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.VisitorData = new System.Windows.Forms.DataGridView();
             this.VisitorDataRC = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.VisitorData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VisitorDataRC)).BeginInit();
@@ -56,7 +54,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(248, 32);
+            this.label1.Location = new System.Drawing.Point(274, 48);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(429, 44);
             this.label1.TabIndex = 1;
@@ -64,7 +62,7 @@
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(1374, 342);
+            this.closeButton.Location = new System.Drawing.Point(1515, 388);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 12;
@@ -72,19 +70,9 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click_1);
             // 
-            // EditVisitorDetails
-            // 
-            this.EditVisitorDetails.Location = new System.Drawing.Point(1396, 211);
-            this.EditVisitorDetails.Name = "EditVisitorDetails";
-            this.EditVisitorDetails.Size = new System.Drawing.Size(131, 55);
-            this.EditVisitorDetails.TabIndex = 11;
-            this.EditVisitorDetails.Text = "Edit Details";
-            this.EditVisitorDetails.UseVisualStyleBackColor = true;
-            this.EditVisitorDetails.Click += new System.EventHandler(this.EditVisitorDetails_Click);
-            // 
             // AddVisitor
             // 
-            this.AddVisitor.Location = new System.Drawing.Point(1236, 211);
+            this.AddVisitor.Location = new System.Drawing.Point(1537, 256);
             this.AddVisitor.Name = "AddVisitor";
             this.AddVisitor.Size = new System.Drawing.Size(131, 55);
             this.AddVisitor.TabIndex = 10;
@@ -96,7 +84,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(449, 226);
+            this.label3.Location = new System.Drawing.Point(590, 272);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(180, 39);
             this.label3.TabIndex = 9;
@@ -105,10 +93,10 @@
             // 
             // VisitorData
             // 
-            this.VisitorData.BackgroundColor = System.Drawing.SystemColors.HighlightText;
+            this.VisitorData.BackgroundColor = System.Drawing.Color.Tomato;
             this.VisitorData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.VisitorData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.VisitorData.Location = new System.Drawing.Point(456, 299);
+            this.VisitorData.Location = new System.Drawing.Point(597, 345);
             this.VisitorData.Name = "VisitorData";
             this.VisitorData.RowHeadersWidth = 51;
             this.VisitorData.RowTemplate.Height = 24;
@@ -118,8 +106,9 @@
             // 
             // VisitorDataRC
             // 
+            this.VisitorDataRC.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.VisitorDataRC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.VisitorDataRC.Location = new System.Drawing.Point(533, 395);
+            this.VisitorDataRC.Location = new System.Drawing.Point(674, 441);
             this.VisitorDataRC.Name = "VisitorDataRC";
             this.VisitorDataRC.RowHeadersWidth = 51;
             this.VisitorDataRC.RowTemplate.Height = 24;
@@ -127,18 +116,9 @@
             this.VisitorDataRC.TabIndex = 13;
             this.VisitorDataRC.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.VisitorDataRC_CellContentClick_1);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.DarkOliveGreen;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(1579, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(183, 897);
-            this.panel1.TabIndex = 14;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1385, 32);
+            this.button1.Location = new System.Drawing.Point(1526, 61);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 61);
             this.button1.TabIndex = 15;
@@ -150,12 +130,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1762, 897);
+            this.ClientSize = new System.Drawing.Size(1924, 897);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.VisitorDataRC);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.EditVisitorDetails);
             this.Controls.Add(this.AddVisitor);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.VisitorData);
@@ -178,12 +156,10 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.Button EditVisitorDetails;
         private System.Windows.Forms.Button AddVisitor;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView VisitorData;
         private System.Windows.Forms.DataGridView VisitorDataRC;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
     }
 }
